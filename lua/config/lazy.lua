@@ -7,16 +7,57 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+local function isIncluded(value, list)
+  local set = {}
+  for _, l in ipairs(list) do
+    set[l] = true
+  end
+  return set[value] or false
+end
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import any extras modules here
-    -- { import = "lazyvim.plugins.extras.lang.typescript" },
-    -- { import = "lazyvim.plugins.extras.lang.json" },
-    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
+    -- import ui extras
+    { import = "lazyvim.plugins.extras.ui.mini-animate" },
+    -- import AI extras
+    { import = "lazyvim.plugins.extras.coding.copilot" },
+    { import = "lazyvim.plugins.extras.coding.tabnine" },
+    -- import generic languages
+    { import = "lazyvim.plugins.extras.lang.docker" },
+    { import = "lazyvim.plugins.extras.lang.json" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.lang.yaml" },
+    -- import project based languages
+    (os.getenv("NEOVIM_LANG") == "clangd")
+        and {
+          { import = "lazyvim.plugins.extras.lang.clangd" },
+          { import = "lazyvim.plugins.extras.lang.cmake" },
+        }
+      or nil,
+    (os.getenv("NEOVIM_LANG") == "elixir") and { import = "lazyvim.plugins.extras.lang.elixir" } or nil,
+    (os.getenv("NEOVIM_LANG") == "go") and { import = "lazyvim.plugins.extras.lang.go" } or nil,
+    (os.getenv("NEOVIM_LANG") == "helm") and { import = "lazyvim.plugins.extras.lang.helm" } or nil,
+    (os.getenv("NEOVIM_LANG") == "java") and { import = "lazyvim.plugins.extras.lang.java" } or nil,
+    (os.getenv("NEOVIM_LANG") == "python") and { import = "lazyvim.plugins.extras.lang.python" } or nil,
+    (os.getenv("NEOVIM_LANG") == "ruby") and { import = "lazyvim.plugins.extras.lang.ruby" } or nil,
+    (os.getenv("NEOVIM_LANG") == "rust") and { import = "lazyvim.plugins.extras.lang.rust" } or nil,
+    (os.getenv("NEOVIM_LANG") == "scala") and { import = "lazyvim.plugins.extras.lang.scala" } or nil,
+    (os.getenv("NEOVIM_LANG") == "terraform") and { import = "lazyvim.plugins.extras.lang.terraform" } or nil,
+    (os.getenv("NEOVIM_LANG") == "typescript") and { import = "lazyvim.plugins.extras.lang.typescript" } or nil,
+    -- import project based languages dependants
+    (isIncluded(os.getenv("NEOVIM_LANG"), { "javascript", "typescript" }))
+        and {
+          import = "lazyvim.plugins.extras.linting.eslint",
+        }
+      or nil,
+    (isIncluded(os.getenv("NEOVIM_LANG"), { "javascript", "typescript" })) and {
+      { import = "lazyvim.plugins.extras.formatting.prettier" },
+    } or nil,
+    (os.getenv("NEOVIM_LANG") == "python") and { import = "lazyvim.plugins.extras.formatting.black" } or nil,
     -- import/override with your plugins
-    { import = os.getenv("ENV_VAR") and "plugins." .. os.getenv("ENV_VAR") or "plugins.generic" },
+    { import = "plugins" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
