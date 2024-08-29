@@ -30,32 +30,23 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.markdown" },
     { import = "lazyvim.plugins.extras.lang.yaml" },
     -- import project based languages
-    (os.getenv("NEOVIM_LANG") == "clangd")
-        and {
-          { import = "lazyvim.plugins.extras.lang.clangd" },
-          { import = "lazyvim.plugins.extras.lang.cmake" },
-        }
-      or nil,
-    (os.getenv("NEOVIM_LANG") == "elixir") and { import = "lazyvim.plugins.extras.lang.elixir" } or nil,
-    (os.getenv("NEOVIM_LANG") == "go") and { import = "lazyvim.plugins.extras.lang.go" } or nil,
-    (os.getenv("NEOVIM_LANG") == "helm") and { import = "lazyvim.plugins.extras.lang.helm" } or nil,
-    (os.getenv("NEOVIM_LANG") == "java") and { import = "lazyvim.plugins.extras.lang.java" } or nil,
-    (os.getenv("NEOVIM_LANG") == "python") and { import = "lazyvim.plugins.extras.lang.python" } or nil,
-    (os.getenv("NEOVIM_LANG") == "ruby") and { import = "lazyvim.plugins.extras.lang.ruby" } or nil,
-    (os.getenv("NEOVIM_LANG") == "rust") and { import = "lazyvim.plugins.extras.lang.rust" } or nil,
-    (os.getenv("NEOVIM_LANG") == "scala") and { import = "lazyvim.plugins.extras.lang.scala" } or nil,
-    (os.getenv("NEOVIM_LANG") == "terraform") and { import = "lazyvim.plugins.extras.lang.terraform" } or nil,
-    (os.getenv("NEOVIM_LANG") == "typescript") and { import = "lazyvim.plugins.extras.lang.typescript" } or nil,
+    { import = "lazyvim.plugins.extras.lang.clangd" },
+    { import = "lazyvim.plugins.extras.lang.cmake" },
+    { import = "lazyvim.plugins.extras.lang.elixir" },
+    { import = "lazyvim.plugins.extras.lang.go" },
+    { import = "lazyvim.plugins.extras.lang.helm" },
+    { import = "lazyvim.plugins.extras.lang.java" },
+    { import = "lazyvim.plugins.extras.lang.python" },
+    { import = "lazyvim.plugins.extras.lang.ruby" },
+    { import = "lazyvim.plugins.extras.lang.rust" },
+    { import = "lazyvim.plugins.extras.lang.scala" },
+    { import = "lazyvim.plugins.extras.lang.terraform" },
+    { import = "lazyvim.plugins.extras.lang.typescript" },
     -- import project based languages dependants
-    (isIncluded(os.getenv("NEOVIM_LANG"), { "javascript", "typescript" }))
-        and {
-          import = "lazyvim.plugins.extras.linting.eslint",
-        }
-      or nil,
-    (isIncluded(os.getenv("NEOVIM_LANG"), { "javascript", "typescript" })) and {
-      { import = "lazyvim.plugins.extras.formatting.prettier" },
-    } or nil,
-    (os.getenv("NEOVIM_LANG") == "python") and { import = "lazyvim.plugins.extras.formatting.black" } or nil,
+    { import = "lazyvim.plugins.extras.linting.eslint" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
+
+    { import = "lazyvim.plugins.extras.formatting.black" },
     -- import/override with your plugins
     { import = "plugins" },
   },
